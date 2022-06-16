@@ -125,9 +125,19 @@ class index(APIView):
 
         return HttpResponse("ok")
 
+Git:
 
+git pe repository initialize krni hy
 
+git init
 
+git remote add origin https://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@github.com/mohammedshoaibdeveloper/Django-Boilerplate.git
+
+git add .
+
+git commit -m "Push"
+
+git push origin master
 
 
 
