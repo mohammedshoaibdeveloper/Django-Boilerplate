@@ -1,0 +1,139 @@
+creating virtual enviroment:
+
+mkvirtualenv usman
+
+activate:
+
+workon <env name>
+
+
+pip install django
+
+creating project:
+
+django-admin startproject <proj name>
+
+creating requirements file:
+
+pip freeze > requirements.txt
+
+run project command:
+
+python manage.py runserver
+
+make migrate:
+
+python manage.py migrate
+
+creating super user:
+
+python manage.py createsuperuser
+
+admin
+admin
+
+creating migrations:
+
+python manage.py makemigrations
+
+make migrate:
+
+python manage.py migrate
+
+
+create app:
+
+python manage.py startapp Api
+
+settings.py: for images and static files
+
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = (
+BASE_DIR / 'static',
+)
+
+
+# Upload File
+MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = '/media/'
+
+
+SECRET_KEY = config('SECRET_KEY')
+
+create .env file:
+
+
+#DJANGO SECRET KEYS
+
+SECRET_KEY=django-insecure-k!_*$yhl4mwlt&v0_g=&i)q0=n)eimm$b0q8zjz8oc%d3v-=c=
+
+from decouple import config
+
+pip install decouple
+
+
+urls.py: basic config
+
+
+
+from django.contrib import admin
+from django.urls import path,include
+
+
+#for images
+
+from django.conf.urls.static import static
+from django.conf import settings
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('Api.urls')),
+    path('Api/', include('Api.urls')),
+]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+admin.site.site_header = 'new'
+
+pip install djangorestframework==3.13.1
+
+App k urls.py pe rkhna hy
+
+from django.urls import path,include
+from Api.views import *
+
+
+urlpatterns = [
+
+#web urls  home
+path('index',index.as_view()),
+
+]
+
+
+App k views.py pe rkhna hy
+
+from django.shortcuts import render
+from rest_framework.views import APIView
+from django.http import HttpResponse
+# Create your views here.
+
+
+class index(APIView):
+
+    def get(self,request):
+
+        return HttpResponse("ok")
+
+
+
+
+
+
+
+
+
+
+
+
+
