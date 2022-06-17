@@ -70,7 +70,7 @@ SECRET_KEY=django-insecure-k!_*$yhl4mwlt&v0_g=&i)q0=n)eimm$b0q8zjz8oc%d3v-=c=
 
 from decouple import config
 
-pip install decouple
+pip install python-decouple
 
 
 urls.py: basic config

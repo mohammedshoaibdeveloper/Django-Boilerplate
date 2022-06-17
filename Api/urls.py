@@ -5,6 +5,6 @@ from Api.views import *
 urlpatterns = [
 
 #web urls  home
-path('index',index.as_view()),
+path('AddUser',AddUser.as_view()),
 
 ]
