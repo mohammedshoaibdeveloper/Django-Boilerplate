@@ -6,5 +6,6 @@ urlpatterns = [
 
 #web urls  home
 path('AddUser',AddUser.as_view()),
+path('GetSpecificUser',GetSpecificUser.as_view()),
 
 ]
