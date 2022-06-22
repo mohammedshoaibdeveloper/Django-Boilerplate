@@ -13,7 +13,7 @@ class AddUser(APIView):
 
         try:
 
-            data = User.objects.all().values('id','firstname','lastname','email','Contactno').order_by('-id')
+            data = User.objects.all().values('id','name','lastname','email','Contactno').order_by('-id')
             return Response({"status":True,"data":data},200)
 
         except Exception as e:
@@ -86,7 +86,6 @@ class AddUser(APIView):
             password = request.data.get('password')
 
             
-
             checkuser = User.objects.filter(id = id).first()
             if checkuser:
 
@@ -134,3 +133,37 @@ class GetSpecificUser(APIView):
             message = {'status':'error','message':str(e)}
             return Response(message)
 
+class AddCategory(APIView):
+
+    def post(self,request):
+
+        name = request.data.get('name')
+        userid = request.data.get('userid')
+
+        userobj = User.objects.filter(id =userid).first()
+        if userobj:
+        
+            data = Category(name=name,userid=userobj)
+            data.save()
+
+            return Response({"status":True,"message":"Add Category Successfully"},201)
+
+        else:
+            return Response({"status":False,"message":"User Not Found"},404)
+
+    def get(self,request):
+
+        id = request.GET['id']
+
+        data = Category.objects.filter(userid__id=id).values('id','name').order_by('-id')
+        if data:
+            return Response({"status":True,"data":data},200)
+
+        else:
+            return Response({"status":False,"message":"Data not found"},404)
+
+
+
+    
+
+  

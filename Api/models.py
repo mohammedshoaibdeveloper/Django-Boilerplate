@@ -10,5 +10,8 @@ class User(models.Model):
     Contactno = models.CharField(max_length=255,default="") 
     password = models.TextField(default="")
 
+class Category(models.Model):
 
+    name = models.CharField(max_length=255,default="")
+    userid = models.ForeignKey(User,on_delete =models.CASCADE,blank=True, null=True)
     
