@@ -8,5 +8,6 @@ urlpatterns = [
 path('AddUser',AddUser.as_view()),
 path('GetSpecificUser',GetSpecificUser.as_view()),
 path('Category',AddCategory.as_view()),
+path('UserLogin',UserLogin.as_view()),
 
 ]

@@ -1,4 +1,6 @@
 import re
+from decouple import config
+import jwt
 
 def checkemailforamt(email):
     emailregix = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
@@ -16,4 +18,19 @@ def passwordLengthValidator(passwd):
         return True
 
     else:
+        return False
+
+
+#Token Expire
+def tokenauth(token):
+
+    try:
+       
+        my_token = jwt.decode(token,config('userkey'), algorithms=["HS256"])
+        return my_token
+
+    except jwt.ExpiredSignatureError:
+        return False
+
+    except:
         return False

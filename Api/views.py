@@ -6,6 +6,9 @@ from .models import *
 from passlib.hash import django_pbkdf2_sha256 as handler
 # Create your views here.
 import Api.usable as uc
+import jwt
+import datetime
+from decouple import config
 
 class AddUser(APIView):
 
@@ -46,7 +49,9 @@ class AddUser(APIView):
                 data = User(firstname=fname,lastname=lname,email=email,Contactno=Contactno,password=handler.hash(password))
                 data.save()
 
-                return Response({"status":True,"message":"Account Created Successfully"},201)
+                data = {'firstname':fname,'lastname':lname,'Email':email,'Contactno':Contactno}
+
+                return Response({"status":True,"message":"Account Created Successfully","data":data},201)
 
             
 
@@ -161,6 +166,51 @@ class AddCategory(APIView):
 
         else:
             return Response({"status":False,"message":"Data not found"},404)
+
+class UserLogin(APIView):
+
+    def get(self,request):
+
+     
+        my_token = uc.tokenauth(request.META['HTTP_AUTHORIZATION'][7:])
+        if my_token:
+
+            data = User.objects.all().values('id','firstname','lastname','email','Contactno').order_by('-id')
+            return Response({"status":True,"data":data},200)
+
+        else:
+            return Response({'status':False,'message':'Unauthorized'},status=401)
+
+    def post(self,request):
+        
+     
+        email = request.data.get('email')
+        password = request.data.get('password')
+
+        fetchUser = User.objects.filter(email=email).first()
+        if fetchUser:
+
+            if handler.verify(password,fetchUser.password):
+
+                access_token_payload = {
+                    'id': fetchUser.id,
+                    'name': fetchUser.firstname+fetchUser.lastname,
+                    'email':fetchUser.email,
+                    'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1),
+                    'iat': datetime.datetime.utcnow(),
+
+                }
+                access_token = jwt.encode(access_token_payload,config('userkey'), algorithm='HS256')
+
+                data = {'firstname':fetchUser.firstname,'lastname':fetchUser.lastname,'Email':fetchUser.email,'Contactno':fetchUser.Contactno}
+                return Response({"status":True,"message":"Login Successfully","token":access_token,"userdata":data},200)
+
+            else:
+                return Response({"status":False,"message":"Invalid Credientials"},401)
+            
+        
+        else:
+            return Response({"status":False,"message":"Account Doesnot Exist"},404)
 
 
 
